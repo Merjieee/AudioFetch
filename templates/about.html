@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AudioFetch | About</title>
+<style>
+/* Reset */
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+
+/* Animated Dark Gradient Background */
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    animation: gradientBG 6s ease infinite;
+    background: linear-gradient(-45deg, #000000, #000080, #000000, #000080);
+    background-size: 400% 400%;
+    color: #fff;
+    overflow-x: hidden;
+}
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    25% { background-position: 50% 50%; }
+    50% { background-position: 100% 50%; }
+    75% { background-position: 50% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Navbar */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        /* add smooth transition */
+        transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* Navbar hidden state */
+nav.hidden {
+  opacity: 0;
+  transform: translateY(-100%);
+  pointer-events: none;
+}
+
+nav h1 { font-size: 1.5rem; text-shadow: 1px 1px 5px #000080; }
+.menu-toggle { display: none; font-size: 1.8rem; cursor: pointer; }
+#nav-links {
+    list-style: none;
+    display: flex;
+    gap: 1rem;
+}
+#nav-links li a {
+    color: #fff; text-decoration: none; font-weight: bold;
+    padding: 0.5rem 1rem; border-radius: 5px;
+    transition: all 0.3s ease; text-shadow: 0 0 5px #000;
+}
+#nav-links li a:hover {
+    background-color: #000080; box-shadow: 0 0 10px #000080, 0 0 20px #000080;
+}
+
+/* Mobile nav */
+@media (max-width: 600px) {
+    .menu-toggle { display: block; }
+    #nav-links {
+        position: fixed; top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: linear-gradient(-45deg, #000000, #000080, #000000, #000080);
+        background-size: 400% 400%;
+        animation: gradientBG 6s ease infinite;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+        opacity: 0; pointer-events: none;
+        transform: translateY(-20px);
+        transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    #nav-links.show {
+        opacity: 1; pointer-events: auto;
+        transform: translateY(0);
+    }
+    #nav-links li a {
+        font-size: 1.5rem; padding: 1rem 2rem;
+        opacity: 0; transform: translateY(20px);
+        transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    #nav-links.show li a {
+        opacity: 1; transform: translateY(0);
+    }
+    #close-btn {
+        display: block; position: absolute; top: 1rem; right: 1rem;
+        font-size: 2rem; color: #fff; cursor: pointer;
+    }
+}
+@media (min-width: 601px) { #close-btn { display: none; } }
+
+/* Container */
+.container {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 2rem 1rem; text-align: center;
+}
+.container h2 { font-size: 2rem; margin-bottom: 1rem; text-shadow: 1px 1px 10px #000080; }
+.container p { font-size: 1.1rem; margin-bottom: 1rem; color: #ccc; max-width: 700px; }
+
+/* Footer */
+footer {
+    background-color: rgba(0,0,0,0.1);
+    padding: 1rem; text-align: center;
+    font-size: 0.8rem; color: #ccc;
+    text-shadow: 0 0 5px #000;
+}
+/* About Section */
+.about {
+    max-width: 900px;
+    margin: 4rem auto;
+    padding: 2rem;
+    background: rgba(0,0,0,0.4);
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+    color: #fff;
+    text-align: left;
+}
+
+.about h1, .about h2 {
+    color: #fff;
+    text-shadow: 0 0 10px #000080, 0 0 20px #000080;
+    margin-bottom: 1rem;
+}
+
+.about p {
+    margin-bottom: 1rem;
+    line-height: 1.6;
+    color: #ccc;
+}
+
+.about ul {
+    margin: 1rem 0;
+    padding-left: 1.2rem;
+}
+
+.about ul li {
+    margin-bottom: 0.8rem;
+    line-height: 1.6;
+    color: #ddd;
+}
+
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav>
+    <h1>AudioFetch</h1>
+    <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+    <ul id="nav-links">
+        <span id="close-btn" onclick="closeMenu()">×</span>
+        <li><a href="/templates/index.html">Converter</a></li>
+        <li><a href="/templates/developer.html">Developers</a></li>
+    </ul>
+</nav>
+
+<!-- Main Content -->
+<!-- About Section -->
+<section class="about">
+  <h1>About AudioFetch</h1>
+  <p>
+    AudioFetch is built to give music lovers a fast, simple, and reliable way to grab their favorite MP3s. 
+    Our mission is to make listening convenient while keeping the experience smooth across all devices.
+  </p>
+
+  <h2>Terms of Use</h2>
+  <ul>
+    <li><strong>Personal Use Only</strong> – Downloads are for your own listening enjoyment, not for resale or commercial use.</li>
+    <li><strong>Respect Copyright</strong> – Make sure the content you download is legally allowed in your country. Always support the artists and creators you love.</li>
+    <li><strong>No Hosting</strong> – AudioFetch does not host or store music files. We only provide the technical service for downloading.</li>
+    <li><strong>Your Responsibility</strong> – You are fully responsible for how you use our service. Any misuse that violates copyright laws is at your own risk.</li>
+    <li><strong>No Liability</strong> – We are not liable for any consequences resulting from how downloaded files are used.</li>
+  </ul>
+
+  <p>
+    AudioFetch is here to make your music experience smoother — but always with fairness and respect for creators. 🎵
+  </p>
+</section>
+
+<!-- Footer -->
+<footer>
+    © 2025 AudioFetch | Built with passion for music lovers.
+</footer>
+
+<script>
+    function toggleMenu(){ document.getElementById('nav-links').classList.add('show'); }
+    function closeMenu(){ document.getElementById('nav-links').classList.remove('show'); }
+    document.querySelectorAll('#nav-links li a').forEach(link => link.addEventListener('click', closeMenu));
+    
+    
+    let lastScrollY = window.scrollY;
+    const navbar = document.querySelector("nav");
+    
+    window.addEventListener("scroll", () => {
+      if (window.innerWidth <= 600) { // Only apply on mobile
+        if (window.scrollY > lastScrollY) {
+          // Scrolling down → hide navbar
+          navbar.classList.add("hidden");
+        } else {
+          // Scrolling up → show navbar
+          navbar.classList.remove("hidden");
+        }
+        lastScrollY = window.scrollY;
+      }
+    });
+    
+    </script>
+</body>
+</html>

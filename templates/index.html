@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Favicon / Website Icon -->
+  <link rel="icon" type="image/png" href="AudioFetch.jpg">
+<title>AudioFetch</title>
+<style>
+/* Reset */
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+
+/* Animated Dark Gradient Background */
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    animation: gradientBG 6s ease infinite;
+    background: linear-gradient(-45deg, #000000, #000080, #000000, #000080);
+    background-size: 400% 400%;
+    color: #fff;
+    overflow-x: hidden;
+}
+
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    25% { background-position: 50% 50%; }
+    50% { background-position: 100% 50%; }
+    75% { background-position: 50% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Navbar */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+nav h1 { font-size: 1.5rem; text-shadow: 1px 1px 5px #000080; }
+.menu-toggle { display: none; font-size: 1.8rem; cursor: pointer; }
+
+/* Nav links for desktop */
+#nav-links {
+    list-style: none;
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    flex: 1;
+}
+#nav-links li a {
+    color: #fff; text-decoration: none; font-weight: bold;
+    padding: 0.5rem 1rem; border-radius: 5px;
+    transition: all 0.3s ease; text-shadow: 0 0 5px #000;
+}
+#nav-links li a:hover {
+    background-color: #000080; box-shadow: 0 0 10px #000080, 0 0 20px #000080;
+}
+
+/* Mobile full-screen nav overlay with animated gradient */
+@media (max-width: 600px) {
+    .menu-toggle { display: block; }
+    #nav-links {
+        position: fixed; top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: linear-gradient(-45deg, #000000, #000080, #000000, #000080);
+        background-size: 400% 400%;
+        animation: gradientBG 6s ease infinite;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+        z-index: 9999;
+        opacity: 0; pointer-events: none;
+        transform: translateY(-20px);
+        transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    #nav-links.show {
+        opacity: 1; pointer-events: auto;
+        transform: translateY(0);
+    }
+    #nav-links li a {
+        font-size: 1.5rem; padding: 1rem 2rem;
+        opacity: 0; transform: translateY(20px);
+        transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    #nav-links.show li a {
+        opacity: 1; transform: translateY(0);
+    }
+    #close-btn {
+        display: block;
+        position: absolute; top: 1rem; right: 1rem;
+        font-size: 2rem; color: #fff; cursor: pointer;
+    }
+}
+@media (min-width: 601px) { #close-btn { display: none; } }
+
+/* Container */
+.container {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 2rem 1rem; text-align: center;
+}
+.intro h2 { font-size: 1.8rem; margin-bottom: 0.5rem; text-shadow: 1px 1px 10px #000080; }
+.intro p { font-size: 1.1rem; margin-bottom: 2rem; color: #ccc; }
+
+/* Form */
+form { display: flex; flex-direction: column; width: 100%; max-width: 400px; }
+input[type="text"] {
+    padding: 0.8rem; border-radius: 5px; border: none;
+    margin-bottom: 1rem; font-size: 1rem;
+    background-color: #000080; color: #fff;
+    box-shadow: inset 0 0 5px #000;
+}
+input[type="text"]::placeholder { color: #aaa; }
+button {
+    padding: 0.8rem; border: none; border-radius: 5px;
+    background-color: #000080; color: #fff; font-weight: bold;
+    cursor: pointer; transition: 0.3s, transform 0.2s, box-shadow 0.3s;
+}
+button:hover { background-color: #000066; transform: scale(1.05); box-shadow: 0 0 15px #000080, 0 0 25px #000066; }
+button.success { color: limegreen; }
+
+/* Preview Section */
+#preview {
+    margin-top: 20px;
+    display: none; /* hidden until link is processed */
+    text-align: center;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 600px;
+}
+#preview img, #preview h3, #preview audio, #preview a { display: block; margin: 10px auto; }
+#preview img { width: 100%; max-width: 400px; border-radius: 8px; }
+#preview audio {
+    width: 100%; max-width: 400px;
+    border-radius: 5px; transition: box-shadow 0.3s ease;
+}
+#preview audio:hover { box-shadow: 0 0 15px #000080, 0 0 25px #000066; }
+#preview a {
+    padding: 12px 20px; background:#000080;
+    color:#fff; border-radius:5px; text-decoration:none;
+    display:inline-block; font-size: 1.1rem;
+    transition: 0.3s, box-shadow 0.3s;
+}
+#preview a:hover { box-shadow: 0 0 15px #000080, 0 0 25px #000066; transform: scale(1.05); }
+@media (min-width: 768px) {
+    #preview a { font-size: 1.3rem; padding: 15px 30px; }
+}
+
+/* Footer */
+footer {
+    background-color: rgba(0,0,0,0.1);
+    padding: 1rem; text-align: center;
+    font-size: 0.8rem; color: #ccc;
+    text-shadow: 0 0 5px #000;
+}
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav>
+    <h1>AudioFetch</h1>
+    <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+    <ul id="nav-links">
+        <span id="close-btn" onclick="closeMenu()">×</span>
+        <li><a href="/templates/about.html">About</a></li>
+        <li><a href="/templates/developer.html">Developers</a></li>
+    </ul>
+</nav>
+
+<!-- Main Content -->
+<div class="container">
+    <div class="intro">
+        <h2>Download. Play. Repeat. Anytime, Anywhere.</h2>
+        <p>Paste the video or audio link below and get your MP3 in seconds.</p>
+    </div>
+
+    <form id="downloadForm">
+        <input type="text" id="link" placeholder="Enter video/audio link here" required>
+        <button type="submit" id="searchBtn">Search</button>
+    </form>
+
+    <!-- Preview Section -->
+    <div id="preview">
+        <img id="preview-img" alt="Thumbnail" style="display:none;">
+        <h3 id="preview-title"></h3>
+        <audio id="audio-player" controls style="display:none;"></audio>
+        <a id="download-btn" href="#" download style="display:none;">Convert to MP3</a>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer>
+    Disclaimer: This website does not host any content and respects copyright laws. Use responsibly.
+</footer>
+
+<script>
+// Navbar toggles
+function toggleMenu(){ document.getElementById('nav-links').classList.add('show'); }
+function closeMenu(){ document.getElementById('nav-links').classList.remove('show'); }
+document.querySelectorAll('#nav-links li a').forEach(link => link.addEventListener('click', closeMenu));
+
+// Clean filename
+function cleanFilename(name){ return name.replace(/[\\\/:*?"<>|]/g, "_"); }
+
+// Form submit
+document.getElementById('downloadForm').addEventListener('submit', async function(e){
+    e.preventDefault();
+    const link = document.getElementById('link').value.trim();
+    const preview = document.getElementById('preview');
+    const img = document.getElementById('preview-img');
+    const titleEl = document.getElementById('preview-title');
+    const audio = document.getElementById('audio-player');
+    const downloadBtn = document.getElementById('download-btn');
+    const searchBtn = document.getElementById('searchBtn');
+
+    if(!link) return;
+
+    // Reset preview
+    preview.style.display = 'flex';
+    img.style.display = 'none';
+    titleEl.textContent = '';
+    audio.style.display = 'none';
+    downloadBtn.style.display = 'none';
+
+    // Button loading state
+    searchBtn.textContent = "Searching... please wait";
+    searchBtn.disabled = true;
+
+    try {
+        const res = await fetch("/download", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ url: link })
+        });
+
+        const data = await res.json();
+        if(res.ok && data.status === "success"){
+            const filename = cleanFilename(data.file);
+            const fileUrl = `/get-file/${filename}`;
+            titleEl.textContent = data.title;
+            audio.src = fileUrl;
+            audio.style.display = 'block';
+            downloadBtn.href = fileUrl;
+            downloadBtn.download = filename;
+            downloadBtn.style.display = 'inline-block';
+
+            // Fetch YouTube thumbnail
+            if(link.includes("youtube.com") || link.includes("youtu.be")){
+                fetch(`https://www.youtube.com/oembed?url=${encodeURIComponent(link)}&format=json`)
+                .then(r=>r.json())
+                .then(d=>{ img.src = d.thumbnail_url; img.style.display = 'block'; })
+                .catch(()=>{});
+            }
+
+            // Success state
+            searchBtn.textContent = "Search Complete";
+            searchBtn.classList.add("success");
+            searchBtn.disabled = false;
+
+            // Reset back to normal after 7 seconds
+            setTimeout(()=>{
+                searchBtn.textContent = "Search";
+                searchBtn.classList.remove("success");
+            }, 7000);
+        } else {
+            alert(data.message || "Error during download.");
+            searchBtn.textContent = "Search";
+            searchBtn.disabled = false;
+        }
+    } catch(err){
+        console.error(err);
+        alert("Error connecting to backend.");
+        searchBtn.textContent = "Search";
+        searchBtn.disabled = false;
+    }
+});
+</script>
+</body>
+</html>
